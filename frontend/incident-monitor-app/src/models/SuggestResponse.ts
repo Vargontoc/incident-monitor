@@ -1,0 +1,1 @@
+export type SuggestResponse = { suggestions: string[]; reasoning?: string } 

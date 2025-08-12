@@ -1,0 +1,1 @@
+export type IncidentComment = { id: string; content:string; authorId: string; createdAt: string }
