@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1.0.0 - Schema version info table" author="agonzalez">
+        <createTable tableName="schema_version_info">
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>    
+    </changeSet>
+
+    <changeSet id="1.0.0 - Create users table" author="agonzalez">
+        <createTable tableName="users">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="username" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar(255)"></column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp"></column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.0 - Create incidents table" author="agonzalez">
+        <createTable tableName="incidents">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="varchar(160)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text"></column>
+            <column name="status" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="priority" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="assigned_to" type="bigint">
+                <constraints foreignKeyName="fk_incidents_assignee" references="users(id)"/> 
+            </column>
+            <column name="reported_by" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_incidents_reporter" references="users(id)"/>
+            </column>
+
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp"></column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.0 - Create incidents comments table" author="agonzalez">
+        <createTable tableName="incident_comments">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="incident_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_incident_comments_incident" references="incidents(id)"/>
+            </column>
+            <column name="author_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_incident_comments_user" references="users(id)"/>
+            </column>
+            <column name="comment" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.0 - Create index for incidents performance" author="agonzalez">
+        <createIndex indexName="idx_incidents_status" tableName="incidents">
+            <column name="status"/>
+        </createIndex>
+        <createIndex indexName="idx_incidents_priority" tableName="incidents">
+            <column name="priority"/>
+        </createIndex>
+        <createIndex indexName="idx_incidents_assignee" tableName="incidents">
+            <column name="assigned_to"/> 
+        </createIndex>
+        <createIndex indexName="idx_incidents_reporter" tableName="incidents">
+            <column name="reported_by"/>
+        </createIndex>
+        <createIndex indexName="idx_incidents_created_at" tableName="incidents">
+            <column name="created_at"/>
+        </createIndex>
+    </changeSet>
+
+
+</databaseChangeLog>
