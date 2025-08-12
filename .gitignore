@@ -1,0 +1,63 @@
+# === Global ===
+# Logs
+*.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Local data
+/data/
+/.vscode/
+
+# === Backend (Java/Spring Boot) ===
+/backend/target/
+/backend/.idea/
+/backend/.classpath
+/backend/.project
+/backend/.settings/
+/backend/.vscode/
+/backend/HELP.md
+/backend/.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+/backend/.gradle/
+/backend/build/
+.gradle
+build/
+
+# IDE files
+*.iml
+*.ipr
+*.iws
+
+# === Frontend (Node/Vue) ===
+/frontend/incident-monitor-app/node_modules/
+/frontend/incident-monitor-app/dist/
+/frontend/incident-monitor-app/.idea/
+/frontend/incident-monitor-app/.vscode/
+
+# Lock files (opcional si quieres evitar conflictos)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# === Docker ===
+# Named volumes (si se generan locales)
+pgdata/
+ollama/
+
+# === Misc ===
+/tmp/
+/out/
+/build/
