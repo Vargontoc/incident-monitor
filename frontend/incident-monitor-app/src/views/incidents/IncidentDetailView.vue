@@ -3,7 +3,7 @@
         <h1>{{ incident?.title }}</h1>
         <p><b>Estado:</b>{{ incident?.status }} | <b>Prioridad</b> {{ incident?.priority }}</p>
         <p>{{ incident?.description }}</p>
-        <button @click="getSuggestion">💡 Sugerir acción</button>
+        <button class="btn btn-primary" @click="getSuggestion">💡 Sugerir acción</button>
 
 
         <h2>Comentarios</h2>
@@ -15,20 +15,22 @@
             </li>
         </ul>
 
-        <form @submit.prevent="postComment">
-            <textarea v-model="newComment"  placeholder="Añadir comentario" rows="5"></textarea>
-            <button>Enviar</button>
+        <form class="card" style="display: grid; gap: 1rem; max-width: 740px;" @submit.prevent="postComment">
+            <textarea class="textarea" v-model="newComment"  placeholder="Añadir comentario" rows="5"></textarea>
+            <button class="btn btn-ghost">Enviar</button>
         </form>
 
-        <div v-if="modalOpen" style="background-color: black; position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;">
-            <div style="background: white; padding: 1rem; max-width: 600px; width: 90%; color: black ;">
-                <h3>Sugerencias</h3>
+        <div v-if="modalOpen" class="modal-backdrop">
+            <div class="modal">
+                <h3 style="margin-top: 8">Sugerencias</h3>
                 <div v-if="suggesting">Consultando IA...</div>
-                <ul v-else>
+                <ul v-else style="margin: 0; padding-left: 1rem;">
                     <li v-for="s in suggestion?.suggestions || []" :key="s">{{ s }}</li>
                 </ul>
-                <p v-if="suggestion?.reasoning"><i>{{ suggestion?.reasoning }}</i></p>
-                <button @click="modalOpen = false">Cerrar</button>
+                <div style="display:flex; justify-content: flex-end; margin-top: 1rem;">
+                    <p v-if="suggestion?.reasoning"><i>{{ suggestion?.reasoning }}</i></p>
+                    <button class="btn btn-primary" @click="modalOpen = false">Salir</button>
+                </div>
             </div>
         </div>
     </div>

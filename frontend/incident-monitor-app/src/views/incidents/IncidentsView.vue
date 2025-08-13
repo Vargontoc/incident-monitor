@@ -1,49 +1,48 @@
 <template>
-    <div>
-        <h1>Incidencias</h1>
+    <div class="card">
         <div class="filters">
             <input v-model="title" placeholder="Buscar por titulo" @keyup.enter="load"/>
-            <label>
-                <input v-model="mine" type="checkbox" @change="load" /> Creadas por mi
-            </label>
-            <label>
-                <input v-model="assignedToMe" type="checkbox" @change="load" /> Asignadas a mi
-            </label>
-            <select multiple v-model="statues">
-                <option v-for="(s, i) in ['OPEN','IN_PROGRESS','RESOLVED','CLOSED']" :key="s + '-' + i" :value="s">{{ s }}</option>
-            </select>
-            <select multiple v-model="priorities" >
-                <option v-for="(s, i) in ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL']" :key="s + '-' + i" :value="s">{{ s }}</option>
-            </select>
-            <button @click="load">Buscar</button>
-            <router-link to="/incidents/new">Nueva incidentcia</router-link>
-            
+            <button class="btn btn-primary" @click="load">Buscar</button>
         </div>
+        <router-link to="/incidents/new">Nueva incidentcia</router-link>
+
 
         <div v-if="loading">Cargando...</div>
-        <table v-else>
+        <table v-else class="table">
             <thead>
                 <tr>
                     <th>Titlulo</th>
                     <th>Estado</th>
                     <th>Prioridad</th>
                     <th>Creada</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="r in rows" :key="r.id" style="cursor: pointer" @click="$router.push(`/incidents/${r.id}`)">
-                    <td>{{ r.title }}</td>
-                    <td>{{ r.status }}</td>
-                    <td>{{ r.priority }}</td>
+                <tr v-for="r in rows" :key="r.id" >
+                    <td style="cursor: pointer" @click="$router.push(`/incidents/${r.id}`)">{{ r.title }}</td>
+                    <td>
+                        <span class="badge">
+                            {{ r.status }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge">
+                            {{ r.priority }}
+                        </span>
+                    </td>
                     <td>{{ new Date(r.createdAt || '').toLocaleString() }}</td>
+                    <td style="text-align: right;">
+                        <button class="btn btn-ghost" @click="$router.push(`/incidents/${r.id}/edit`)">Editar</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
 
-        <div class="pager" style="margin-top:8px; display: flex; gap:8px; align-items: center;">
-            <button :disabled="page === 0" @click="prev"><< Anterior</button>
+        <div class="pager" v-if="loading === false">
+            <button :disabled="page === 0" class="btn btn-ghost" @click="prev"><< Anterior</button>
             <span>Página {{  page + 1 }} / {{ totalPages }}</span>
-            <button :disabled="page + 1 >= totalPages" @click="next">Siguiente >></button>
+            <button :disabled="page + 1 >= totalPages" class="btn btn-ghost" @click="next">Siguiente >></button>
         </div>
     </div>
 </template>

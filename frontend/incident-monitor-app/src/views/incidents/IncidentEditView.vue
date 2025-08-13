@@ -2,12 +2,15 @@
     <div>
         <h1>{{ id ?  'Editar Incicencia' : 'Nueva incidencia' }}</h1>
         <form @submit.prevent="save">
-            <input  v-model="title" placeholder="Titulo" required maxlength="160"/>
-            <textarea v-model="description" placeholder="Descripción" rows="5"></textarea>
-            <select v-model="priority">
+            <input class="input"  v-model="title" placeholder="Titulo" required maxlength="160"/>
+            <textarea class="textarea" v-model="description" placeholder="Descripción" rows="5"></textarea>
+            <select class="select" v-model="priority">
                 <option v-for="(p, i) in priorities" :key="p +  '-' + i">{{ p }}</option>
             </select>
-            <button :disabled="loading">{{ loading ? ' Guardando...': 'Guardar' }}</button>
+            <div style="display: flex; gap: .5rem; justify-content: flex-end;">
+                <button class="btn btn-ghost" type="button" @click="$router.back()">Cancelar</button>
+                <button class="btn btn-primary" :disabled="loading">{{ loading ? ' Guardando...': 'Guardar' }}</button>
+            </div>
         </form>
     </div>
 </template>
